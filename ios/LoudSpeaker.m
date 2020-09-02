@@ -10,7 +10,20 @@ RCT_EXPORT_METHOD(open :(BOOL)isSpeak resolve:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
   dispatch_async(dispatch_get_main_queue(), ^{
-    if([UIDevice currentDevice].systemVersion.floatValue >= 6.0) {
+    Float32 systemVersion = [UIDevice currentDevice].systemVersion.floatValue;
+
+    if(systemVersion > 11.2) {
+        if (isSpeak) {
+            BOOL ok = [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker|AVAudioSessionCategoryOptionAllowBluetooth
+            error: nil];
+            if (ok) {
+            }
+        } else {
+          BOOL ok = [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+          if (ok) {
+          }
+        }
+    } else if(systemVersion >= 6.0 && systemVersion <= 11.2) {
       if (isSpeak) {
         BOOL ok = [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
         if (ok) {
