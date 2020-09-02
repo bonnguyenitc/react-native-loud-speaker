@@ -17,6 +17,9 @@ RCT_EXPORT_METHOD(open :(BOOL)isSpeak resolve:(RCTPromiseResolveBlock)resolve
             BOOL ok = [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker|AVAudioSessionCategoryOptionAllowBluetooth
             error: nil];
             if (ok) {
+                BOOL active = [[AVAudioSession sharedInstance] setActive: YES error: nil];
+                if (active) {
+                }
             }
         } else {
           BOOL ok = [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
